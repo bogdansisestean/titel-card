@@ -130,7 +130,7 @@ export default function SaveTheDateBanner() {
     <Wrapper>
       <Subheading>Save the Date</Subheading>
       <Heading>Noemi & Titel</Heading>
-      <DateText>20 Iulie 2025 · Cluj-Napoca</DateText>
+      <DateText>20 Iulie 2025</DateText>
       <Timer>
         <TimeBox>
           <TimeNumber>{countdown.days}</TimeNumber>

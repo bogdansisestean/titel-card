@@ -1,8 +1,7 @@
 "use client";
-import GlobalStyle from "@/app/styles/GlobalStyle";
+import GlobalStyle from "../../styles/GlobalStyle";
 import React from "react";
 import Countdown from "../Countdown/Countdown";
-import Story from "../Story/PovesteaNoastra";
 import Ceremony from "../Ceremony/Ceremony";
 import Party from "../Party/Party";
 import ConfirmationForm from "../ConfirmationForm/ConfirmationForm";
@@ -17,10 +16,6 @@ const Page = styled.div`
   display: flex;
   justify-content: center;
   min-height: 100vh;
-  background-image: url("/images/pexels-evie-shaffer.jpg");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
 
   &::before {
     content: "";
