@@ -3,7 +3,8 @@ import React from "react";
 import styled from "styled-components";
 
 const Section = styled.section`
-  background-color: #fdf8f5;
+  background-color: white;
+  width: 100%;
   padding: 5rem 2rem;
   color: #5c3a1d;
   font-family: "Georgia", serif;

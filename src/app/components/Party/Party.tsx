@@ -5,10 +5,16 @@ import Image from "next/image";
 
 const Section = styled.section`
   background-color: #fffaf7;
-  width: -webkit-fill-available;
+  width: 100%;
   padding: 5rem 2rem;
   color: #5c3a1d;
   font-family: "Georgia", serif;
+`;
+
+const Container = styled.div`
+  width: 100%;
+  max-width: 80%;
+  margin: 0 auto;
 `;
 
 const Title = styled.h2`
@@ -29,6 +35,10 @@ const PartyDetails = styled.div`
   justify-content: center;
   gap: 2rem;
   flex-wrap: wrap-reverse;
+
+  width: 100%;
+  max-width: 60%;
+  margin: 0 auto;
 
   @media (max-width: 768px) {
     flex-direction: column;
@@ -60,27 +70,31 @@ const InfoBox = styled.div`
 export default function Party() {
   return (
     <Section>
-      <Title>Petrecerea</Title>
-      <PartyDetails>
-        <Image
-          src="/images/restaurant.jpg" // Replace with your image
-          alt="Secret Garden Dănești"
-          width={400}
-          height={250}
-          style={{
-            borderRadius: "12px",
-            objectFit: "cover",
-            maxWidth: "100%",
-            height: "auto",
-          }}
-        />
-        <InfoBox>
-          <p>Sărbătorim prin dans și voie bună la:</p>
-          <strong>Secret Garden Dănești</strong>
-          <p>Dănești nr 61, DJ 184 A, 437328</p>
-          <p>Ora 15:00</p>
-        </InfoBox>
-      </PartyDetails>
+      <Container>
+        <Title>Petrecerea</Title>
+        <PartyDetails>
+          <Image
+            src="/images/restaurant.jpg" // replace with your actual path
+            alt="Secret Garden Dănești"
+            width={400}
+            height={250}
+            style={{
+              borderRadius: "12px",
+              objectFit: "cover",
+              objectPosition: "top center",
+              width: "100%",
+              height: "auto",
+              maxWidth: "400px",
+            }}
+          />
+          <InfoBox>
+            <p>Sărbătorim prin dans și voie bună la:</p>
+            <strong>Secret Garden Dănești</strong>
+            <p>Dănești nr 61, DJ 184 A, 437328</p>
+            <p>Ora 15:00</p>
+          </InfoBox>
+        </PartyDetails>
+      </Container>
     </Section>
   );
 }
