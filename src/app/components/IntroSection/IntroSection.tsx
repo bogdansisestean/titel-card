@@ -80,11 +80,8 @@ export default function IntroSection() {
       </HeartWrapper>
       <Title>Dragi prieteni,</Title>
       <Text>
-        Ne-am legat destinele și acum e timpul să dăm drumul la party! Vă
-        invităm la o seară pe cinste, cu dansuri maramureșene, râsete cât
-        cuprinde și voie bună. Promitem o petrecere plină de veselie și momente
-        speciale, așa cum merită să fie sărbătorit un asemenea eveniment
-        important din viața noastră.
+        Ne-am unit destinele, așadar este timpul să sărbătorim! Vă invităm să
+        petreceți alături de noi acest moment unic din viața noastră!
       </Text>
     </Section>
   );
