@@ -1,6 +1,8 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 // Styled Components for Party with background image
 const Section = styled.section`
@@ -70,7 +72,7 @@ const InfoBox = styled.div`
   font-size: 1.125rem;
   line-height: 1.6;
   color: #fdf8f5;
-  text-align: center; /* Center all text */
+  text-align: center;
 
   strong {
     display: block;
@@ -88,6 +90,86 @@ const InfoBox = styled.div`
     text-decoration: underline;
   }
 `;
+
+// Slider Styled Components
+const SliderContainer = styled.div`
+  position: relative;
+  width: 100%;
+  max-width: 700px;
+  height: 600px;
+  margin: 2rem auto;
+  overflow: hidden;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  @media (max-width: 768px) {
+    height: 250px;
+  }
+`;
+
+const SlideImage = styled(motion.img)`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+`;
+
+const ArrowButton = styled.button`
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.3);
+  border: none;
+  padding: 0.5rem;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.5);
+  }
+`;
+
+// Slider component for Poza8 & Poza9
+function ImageSlider({ images }) {
+  const [[page, direction], setPage] = useState([0, 0]);
+  const index = ((page % images.length) + images.length) % images.length;
+  const paginate = (dir) => setPage([page + dir, dir]);
+
+  const variants = {
+    enter: (d) => ({ x: d > 0 ? 300 : -300, opacity: 0 }),
+    center: { x: 0, opacity: 1 },
+    exit: (d) => ({ x: d < 0 ? 300 : -300, opacity: 0 }),
+  };
+
+  return (
+    <SliderContainer>
+      <AnimatePresence initial={false} custom={direction}>
+        <SlideImage
+          key={page}
+          src={images[index]}
+          alt={`Slide ${index + 1}`}
+          custom={direction}
+          variants={variants}
+          initial="enter"
+          animate="center"
+          exit="exit"
+          transition={{ duration: 0.5 }}
+        />
+      </AnimatePresence>
+      <ArrowButton onClick={() => paginate(-1)} style={{ left: "1rem" }}>
+        <ChevronLeft size={24} />
+      </ArrowButton>
+      <ArrowButton onClick={() => paginate(1)} style={{ right: "1rem" }}>
+        <ChevronRight size={24} />
+      </ArrowButton>
+    </SliderContainer>
+  );
+}
 
 export default function Party() {
   return (
@@ -110,6 +192,7 @@ export default function Party() {
             <strong>Ora 15:00</strong>
           </InfoBox>
         </PartyDetails>
+        <ImageSlider images={["/images/poza8.jpg", "/images/poza9.jpg"]} />
       </Container>
     </Section>
   );
