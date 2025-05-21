@@ -3,25 +3,45 @@ import Image from "next/image";
 import React from "react";
 import styled from "styled-components";
 
+// Styled Components for Ceremony with background
 const Section = styled.section`
   width: 100%;
   padding: 5rem 2rem;
-  text-align: center;
-  color: #5c3a1d;
+  color: #fff;
   font-family: "Georgia", serif;
+  background-image: url("/images/biserica.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+
+  /* Overlay to darken background for text readability */
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 0;
+  }
 `;
 
 const Container = styled.div`
+  position: relative;
+  z-index: 1;
   width: 100%;
   max-width: 80%;
   margin: 0 auto;
+  text-align: center;
 `;
 
 const Title = styled.h2`
   font-family: "Alex Brush", cursive;
   font-size: 3rem;
   margin-bottom: 2rem;
-  color: #b38b59;
+  color: #fdf8f5;
 
   @media (max-width: 480px) {
     font-size: 2.2rem;
@@ -32,14 +52,23 @@ const Paragraph = styled.p`
   font-size: 1.125rem;
   line-height: 1.7;
   margin-bottom: 2rem;
+  color: #f0e7e0;
 
   strong {
     display: block;
     font-weight: 700;
     font-size: 1.25rem;
     margin-top: 1.5rem;
-    color: #7b4f2b;
+    color: #ffecc9;
   }
+`;
+
+const NasiTitle = styled.h3`
+  font-size: 1.75rem;
+  margin-bottom: 1rem;
+  color: #ffecc9;
+  font-weight: 700;
+  text-align: center;
 `;
 
 const GuestList = styled.ul`
@@ -54,11 +83,12 @@ const GuestList = styled.ul`
 
 const GuestCard = styled.li`
   font-size: 1rem;
-  background: #fff4ec;
+  background: rgba(255, 255, 255, 0.2);
   padding: 1rem 1.5rem;
   border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   font-weight: 500;
+  color: #fff;
   transition: transform 0.3s ease;
 
   &:hover {
@@ -74,7 +104,6 @@ const CeremonyDetails = styled.div`
   flex-wrap: wrap;
 
   width: 100%;
-  max-width: 60%;
   margin: 0 auto;
 
   @media (max-width: 768px) {
@@ -87,25 +116,23 @@ const ChurchText = styled.div`
   min-width: 250px;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   justify-content: center;
   gap: 0.5rem;
   padding: 1rem;
-
-  @media (max-width: 768px) {
-    align-items: center;
-    text-align: center;
-  }
+  text-align: center;
 
   strong {
     font-size: 1.5rem;
-    color: #7b4f2b;
+    color: #ffecc9;
     margin-bottom: 0.25rem;
+    font-weight: 700;
   }
 
   p {
     margin: 0;
     font-size: 1.125rem;
+    color: #fdf8f5;
   }
 `;
 
@@ -120,8 +147,9 @@ export default function Ceremony() {
           ne-au fost alături în momentele importante din viața noastră.
         </Paragraph>
 
+        <NasiTitle>Nași noștri:</NasiTitle>
         <GuestList>
-          <GuestCard>Monika și Serba Chisacof</GuestCard>
+          <GuestCard>Monika și Șerban Chișacof</GuestCard>
           <GuestCard>Mădălina și Valentin Tulics</GuestCard>
           <GuestCard>Natalia și Dennis Debreczeni</GuestCard>
           <GuestCard>Crina și Ionuț Pascu</GuestCard>
@@ -131,22 +159,8 @@ export default function Ceremony() {
           <ChurchText>
             <strong>Catedrala Episcopală “Sfânta Treime”</strong>
             <p>Baia Mare</p>
-            <p>Ora 12:30</p>
+            <strong>Ora 12:30</strong>
           </ChurchText>
-          <Image
-            src="/images/biserica.jpg"
-            alt="Catedrala Episcopală Sfânta Treime"
-            width={400}
-            height={250}
-            style={{
-              borderRadius: "12px",
-              objectFit: "cover",
-              objectPosition: "top center",
-              width: "100%",
-              height: "auto",
-              maxWidth: "400px",
-            }}
-          />
         </CeremonyDetails>
       </Container>
     </Section>

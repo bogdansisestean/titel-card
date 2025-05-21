@@ -1,7 +1,10 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
+// Styled Components
 const Section = styled.section`
   padding: 5rem 2rem;
   width: 100%;
@@ -15,6 +18,9 @@ const Container = styled.div`
   max-width: 80%;
   margin: 0 auto;
   text-align: center;
+  @media (max-width: 768px) {
+    max-width: 100%;
+  }
 `;
 
 const Title = styled.h2`
@@ -22,114 +28,138 @@ const Title = styled.h2`
   font-size: 3rem;
   margin-bottom: 3rem;
   color: #b38b59;
+
+  @media (max-width: 768px) {
+    font-size: 2.5rem;
+  }
 `;
 
-const ContentBlock = styled.div`
+const SlidersRow = styled.div`
   display: flex;
+  gap: 2rem;
+  justify-content: center;
+  align-items: start;
   flex-wrap: wrap;
+`;
+
+const SliderContainer = styled.div`
+  position: relative;
+  width: 100%;
+  max-width: 360px;
+  height: 600px;
+  overflow: hidden;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+`;
+
+const SlideImage = styled(motion.img)`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+`;
+
+const OverlayText = styled.div`
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+  right: 1rem;
+  color: #fff;
+  font-size: 1.125rem;
+  line-height: 1.5;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 1rem;
+  border-radius: 8px;
+  text-align: center;
+  max-height: 40%;
+  overflow-y: auto;
+`;
+
+const ArrowButton = styled.button`
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.3);
+  border: none;
+  padding: 0.5rem;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 3rem;
-  gap: 2rem;
+  color: #fff;
 
-  @media (max-width: 768px) {
-    flex-direction: column;
+  &:hover {
+    background: rgba(0, 0, 0, 0.5);
   }
 `;
 
-const Text = styled.p`
-  flex: 1;
-  font-size: 1.125rem;
-  line-height: 1.8;
-  max-width: 600px;
-  text-align: left;
+// Slider component with its own state
+function Slider({ images, text }) {
+  const [[page, direction], setPage] = useState([0, 0]);
+  const idx = ((page % images.length) + images.length) % images.length;
+  const paginate = (newDir) => setPage([page + newDir, newDir]);
 
-  @media (max-width: 768px) {
-    text-align: center;
-  }
-`;
+  const variants = {
+    enter: (dir) => ({ x: dir > 0 ? 300 : -300, opacity: 0 }),
+    center: { x: 0, opacity: 1 },
+    exit: (dir) => ({ x: dir < 0 ? 300 : -300, opacity: 0 }),
+  };
 
-const ImageRow = styled.div`
-  display: flex;
-  gap: 1.5rem;
-  flex-wrap: wrap;
-  justify-content: center;
-`;
+  return (
+    <SliderContainer>
+      <AnimatePresence initial={false} custom={direction}>
+        <SlideImage
+          key={page}
+          src={images[idx]}
+          alt={`Slide ${idx + 1}`}
+          custom={direction}
+          variants={variants}
+          initial="enter"
+          animate="center"
+          exit="exit"
+          transition={{ duration: 0.5 }}
+        />
+      </AnimatePresence>
+      <OverlayText>{text}</OverlayText>
+      <ArrowButton onClick={() => paginate(-1)} style={{ left: "1rem" }}>
+        <ChevronLeft size={24} />
+      </ArrowButton>
+      <ArrowButton onClick={() => paginate(1)} style={{ right: "1rem" }}>
+        <ChevronRight size={24} />
+      </ArrowButton>
+    </SliderContainer>
+  );
+}
 
-const Image = styled.img`
-  width: 180px;
-  height: 250px;
-  object-fit: cover;
-  object-position: top center;
-  border: 3px dashed #b38b59;
-  border-radius: 12px;
-
-  @media (max-width: 480px) {
-    width: 120px;
-    height: 180px;
-  }
-`;
-
-/* New: Wider variant for bottom two photos */
-const WideImage = styled(Image)`
-  width: 460px;
-  height: 360px;
-
-  @media (max-width: 480px) {
-    width: 240px;
-    height: 150px;
-  }
-`;
+// Data for each slider
+const sliderData = [
+  {
+    images: ["/images/poza2.jpg", "/images/poza3.jpg"],
+    text: `Ne-am cunoscut acum 20 de ani, tineri și neliniștiți, am legat o prietenie foarte frumoasă, dar viața ne-a purtat pe drumuri diferite și fiecare dintre noi a luat viața în piept cum a știut mai bine, devenind oamenii de azi!`,
+  },
+  {
+    images: ["/images/poza4.jpg", "/images/poza5.jpg"],
+    text: `Într-o seară oarecare, fiind amândoi la același concert, ne-am reîntâlnit și am petrecut timp de calitate împreună.`,
+  },
+  {
+    images: ["/images/poza6.jpg", "/images/poza7.jpg"],
+    text: `Cu trecerea timpului am ajuns să ne privim cu alți ochi, am descoperit unul în altul nu doar un prieten bun, ci și un partener pe care te poți sprijini și un om cu care să te completezi!`,
+  },
+];
 
 export default function PovesteaNoastra() {
   return (
     <Section>
       <Container>
         <Title>Povestea noastră</Title>
-
-        <ContentBlock>
-          <Text>
-            Ne-am cunoscut acum 20 de ani, tineri și neliniștiți, am legat o
-            prietenie foarte frumoasă, dar viața ne-a purtat pe drumuri diferite
-            și fiecare dintre noi a luat viața în piept cum a știut mai bine,
-            devenind oamenii de azi!
-          </Text>
-          <ImageRow>
-            <Image src="/images/poza2.jpg" alt="Poza 2" />
-            <Image src="/images/poza3.jpg" alt="Poza 3" />
-          </ImageRow>
-        </ContentBlock>
-
-        <ContentBlock>
-          <Text>
-            Într-o seară oarecare, fiind amândoi la același concert, ne-am
-            reîntâlnit și am petrecut timp de calitate împreună.
-          </Text>
-          <ImageRow>
-            <Image src="/images/poza4.jpg" alt="Poza 4" />
-            <Image src="/images/poza5.jpg" alt="Poza 5" />
-          </ImageRow>
-        </ContentBlock>
-
-        <ContentBlock>
-          <Text>
-            Cu trecerea timpului am ajuns să ne privim cu alți ochi, am
-            descoperit unul în altul nu doar un prieten bun, ci și un partener
-            pe care te poți sprijini și un om cu care să te completezi!
-          </Text>
-          <ImageRow>
-            <Image src="/images/poza6.jpg" alt="Poza 6" />
-            <Image src="/images/poza7.jpg" alt="Poza 7" />
-          </ImageRow>
-        </ContentBlock>
-
-        {/* Bottom two photos, now wider */}
-        <ContentBlock>
-          <ImageRow>
-            <WideImage src="/images/poza8.jpg" alt="Poza 8" />
-            <WideImage src="/images/poza9.jpg" alt="Poza 9" />
-          </ImageRow>
-        </ContentBlock>
+        <SlidersRow>
+          {sliderData.map((data, i) => (
+            <Slider key={i} images={data.images} text={data.text} />
+          ))}
+        </SlidersRow>
       </Container>
     </Section>
   );

@@ -83,9 +83,10 @@ export default function ConfirmationForm() {
       <Title>Veți fi alături de noi?</Title>
       <Form>
         <Input type="text" placeholder="Nume" required />
+        <Input type="text" placeholder="Prenume" required />
         <Input type="number" placeholder="Nr persoane" required />
         <Input type="tel" placeholder="Nr telefon" required />
-        <TextArea placeholder="Alte mențiuni" />
+        <TextArea placeholder="Alte mențiuni (vegetarian, copii etc.)" />
         <Button type="submit">Trimite</Button>
       </Form>
     </Section>
