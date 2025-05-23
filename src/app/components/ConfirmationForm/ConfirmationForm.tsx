@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 
 const Section = styled.section`
@@ -77,17 +77,83 @@ const Button = styled.button`
   }
 `;
 
+const ErrorMessage = styled.p`
+  font-family: "Georgia", serif;
+  color: #d32f2f;
+  margin-top: 1rem;
+  font-size: 1rem;
+`;
+
+const SuccessMessage = styled.p`
+  font-family: "Georgia", serif;
+  color: #388e3c;
+  margin-top: 1rem;
+  font-size: 1rem;
+`;
+
 export default function ConfirmationForm() {
+  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">(
+    "idle"
+  );
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const form = e.currentTarget;
+    setStatus("sending");
+    const formData = Object.fromEntries(new FormData(form).entries());
+
+    try {
+      const res = await fetch("/api/confirmation", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+      console.log("Response status:", res.status, "ok?", res.ok);
+      if (!res.ok) {
+        const errText = await res.text();
+        console.error("Error text:", errText);
+        throw new Error(errText);
+      }
+      setStatus("sent");
+      form.reset();
+    } catch (error) {
+      console.error("Submission error:", error);
+      setStatus("error");
+    }
+  }
+
   return (
     <Section>
       <Title>Veți fi alături de noi?</Title>
-      <Form>
-        <Input type="text" placeholder="Nume" required />
-        <Input type="text" placeholder="Prenume" required />
-        <Input type="number" placeholder="Nr persoane" required />
-        <Input type="tel" placeholder="Nr telefon" required />
-        <TextArea placeholder="Alte mențiuni (vegetarian, copii etc.)" />
-        <Button type="submit">Trimite</Button>
+      <Form onSubmit={handleSubmit}>
+        <Input name="nume" type="text" placeholder="Nume" required />
+        <Input name="prenume" type="text" placeholder="Prenume" required />
+        <Input
+          name="nrPersoane"
+          type="number"
+          placeholder="Nr persoane"
+          required
+        />
+        <Input name="telefon" type="tel" placeholder="Nr telefon" required />
+        <TextArea
+          name="mentions"
+          placeholder="Alte mențiuni (vegetarian, copii etc.)"
+        />
+        <Button type="submit" disabled={status === "sending"}>
+          {status === "sending"
+            ? "Se trimite…"
+            : status === "sent"
+            ? "Trimis!"
+            : "Trimite"}
+        </Button>
+        {status === "error" && (
+          <ErrorMessage>A apărut o eroare. Încearcă din nou.</ErrorMessage>
+        )}
+        {status === "sent" && (
+          <SuccessMessage>
+            Mulțumim! Răspunsul tău a fost trimis cu succes.
+          </SuccessMessage>
+        )}
       </Form>
     </Section>
   );

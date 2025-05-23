@@ -149,7 +149,7 @@ export default function Ceremony() {
 
         <NasiTitle>Nași noștri:</NasiTitle>
         <GuestList>
-          <GuestCard>Monika și Șerban Chișacof</GuestCard>
+          <GuestCard>Monika și Șerban Chisacof</GuestCard>
           <GuestCard>Mădălina și Valentin Tulics</GuestCard>
           <GuestCard>Natalia și Dennis Debreczeni</GuestCard>
           <GuestCard>Crina și Ionuț Pascu</GuestCard>
