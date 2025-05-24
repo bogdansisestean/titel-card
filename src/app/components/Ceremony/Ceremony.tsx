@@ -147,7 +147,7 @@ export default function Ceremony() {
           ne-au fost alături în momentele importante din viața noastră.
         </Paragraph>
 
-        <NasiTitle>Nași noștri:</NasiTitle>
+        <NasiTitle>Nași noștrii:</NasiTitle>
         <GuestList>
           <GuestCard>Monika și Șerban Chisacof</GuestCard>
           <GuestCard>Mădălina și Valentin Tulics</GuestCard>

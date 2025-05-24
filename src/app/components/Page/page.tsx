@@ -1,6 +1,6 @@
 "use client";
 import GlobalStyle from "../../styles/GlobalStyle";
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Countdown from "../Countdown/Countdown";
 import Ceremony from "../Ceremony/Ceremony";
 import Party from "../Party/Party";
@@ -16,6 +16,7 @@ const Page = styled.div`
   display: flex;
   justify-content: center;
   min-height: 100vh;
+  cursor: pointer;
 
   &::before {
     content: "";
@@ -31,7 +32,6 @@ const Page = styled.div`
 `;
 
 const Main = styled.main`
-  //   max-width: 800px;
   width: 100%;
   text-align: center;
   display: flex;
@@ -44,10 +44,48 @@ const Main = styled.main`
 `;
 
 export default function Home() {
+  const audioRef = useRef<HTMLAudioElement>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  // Attempt muted autoplay to satisfy browser policies
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.muted = true;
+      audioRef.current.play().catch((e) => {
+        console.warn("Muted autoplay failed:", e);
+      });
+    }
+  }, []);
+
+  // On first user interaction, unmute and play
+  const handleUserInteraction = () => {
+    if (!isPlaying && audioRef.current) {
+      audioRef.current.muted = false;
+      audioRef.current
+        .play()
+        .then(() => {
+          setIsPlaying(true);
+          console.log("Background music is playing");
+        })
+        .catch((e) => {
+          console.warn("Playback failed on interaction:", e);
+        });
+    }
+  };
+
   return (
-    <Page>
+    <Page onClick={handleUserInteraction}>
       <GlobalStyle />
       <Main>
+        {/* Background music autoplay fallback */}
+        <audio
+          ref={audioRef}
+          src="/audio/Scorpions-You_and_I.mp3"
+          autoPlay
+          loop
+          playsInline
+        />
+
         <HeroBanner />
         <IntroSection />
         <Countdown />
